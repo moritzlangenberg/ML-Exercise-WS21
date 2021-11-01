@@ -1,0 +1,67 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,
+	urlcolor=blue,
+}
+
+\pagestyle{fancy}
+
+
+\newcommand{\E}{\mathop{{}\mathbb{E}}}
+\newcommand{\Var}{\mathrm{Var}}
+
+\renewcommand{\qed}{\quad\qedsymbol}
+\newcommand*{\defeq}{\stackrel{\text{def}}{=}}
+
+\binoppenalty=\maxdimen
+\relpenalty=\maxdimen
+\chead{\textbf{Exercise 1}}
+\rhead{Machine Learning}
+
+\begin{document}
+	\textbf{Question 4: Maximum Likelihood}\\
+	If $x_1,...,x_N$ are realizations of independent random variables with density $p(x|\theta)$, then the likelihood function is equal to the product of densities at these points:
+	$$L(\theta) = \prod_{i=1}^{N} p(x_i|\theta) = \theta^{2N}\left(\prod_{i=1}^{N}x_i\right)\exp\left(-\theta\sum_{i=1}^{N}x_i\right)$$
+	For convenience, let us further consider the logarithm of the likelihood function.
+	$$ l(\theta) = \ln L(\theta) = \ln \left(\theta^{2N}\right) + \ln\left(\prod_{i=1}^{N}x_i\right) -\theta\sum_{i=1}^{N}x_i $$
+	The estimation $\tilde\theta$  will be obtained from the maximization problem:
+	$$\tilde\theta = \arg \max l(\theta) = \arg\max\left[ \ln \left(\theta^{2N}\right) + \ln\left(\prod_{i=1}^{N}x_i\right) -\theta\sum_{i=1}^{N}x_i \right]$$
+	The necessary condition for the maximum: 
+	$$\frac{dl(\theta)}{d\theta} = \frac{2N}{\theta}-\sum_{i=1}^{N}x_i = 0$$
+	$$\tilde\theta = \frac{2N}{\sum x_i} = \frac{2}{\bar x}$$
+	where $\bar x$ is the average of $x_1,...,x_N$.
+	Let us also check the sufficient condition for the maximum:
+	$$\frac{d^2 l(\theta)}{d\theta^2} =- \frac{2N}{\theta^2} < 0$$
+	The second derivative at the point $\tilde{\theta}$ is less than zero, so $\tilde{\theta}$ is indeed the maximum point. That is, 	$\tilde\theta  = 2/\bar x$ is a maximum likelihood estimate
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
