@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage[shortlabels]{enumitem}
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\pagestyle{fancy}
+
+
+\newcommand{\E}{\mathop{{}\mathbb{E}}}
+
+\binoppenalty=\maxdimen
+\relpenalty=\maxdimen
+\chead{\textbf{Exercise 1}}
+\rhead{Machine Learning}
+
+\begin{document}
+	\textbf{Question 2:  Warming up!}\\
+	\begin{enumerate}
+		\item[a)] 
+		The probability of selecting an apple is equal to the sum of the probabilities of selecting an apple from each of the boxes, since these events are disjoint. Since selecting a box and choosing a fruit are independent events, the probability of choosing a particular fruit from a particular box is the product of their respective probabilities. Thus we get
+		$$\Pr (apple) = p(r)\frac{3}{10} + p(g)\frac{3}{10} + p(b)\frac{1}{2} = 0.34$$
+		
+		\item[b)]
+		We need to calculate the probability of selecting an orange from the green box, assuming an orange was selected. Denote event of selecting orange as $B$ and event selecting orange from green box as $A$. Let's write down the formula for the conditional probability:
+		$$\Pr(A|B) = \frac{\Pr(A \cap B)}{\Pr(B)}.$$
+		Since $A \subset B$, then $\Pr(A \cap B) = \Pr(A)$. Doing the same calculations as in a), we get
+		$$ \Pr(A|B) = \frac{0.18}{0.36} = 0.5 $$
+		
+	\end{enumerate}
+	%------------------------------------------------------%
+
+
+	\textbf{Question 3: Minimizing the Expected Loss}\\
+	\begin{enumerate}
+		\item[a)]
+		The expected loss of classification $x$ in class $j$ is
+		$$\E_j[L] = \sum_{k=1}^{N}L_{kj} p(C_k|x) = l_s\sum_{\substack{k=1\\ k \neq j}}^{N}p(C_k|x) =
+		l_s\left( \underbrace{\sum_{k=1}^{N}p(C_k|x)}_{=1} - p(C_j|x)\right) = l_s - l_sp(C_j|x).$$
+		That is, by selecting one of the classes we subtract the corresponding term. To minimize the expected loss, it is obviously necessary to subtract  the largest. So we chose class $j: \forall i:  p(C_j|x) \geq p(C_i|x)$. \\
+		If we reject $x$ expected loss would be 
+		$$ \E_{rej}[L] = l_r. $$
+		Hence, we chose $C_{rej}$ if $l_r < l_s - l_s \max\left(p(C_j|x)\right)$.\\
+		Combining the rule of classification and non-rejection we get
+		$$ x \rightarrow \begin{cases} 
+		C_j,& \text{iff } \forall i:  p(C_j|x) \geq p(C_i|x) \wedge p(C_j|x) \geq 1 - \frac{l_r}{l_s} \\
+		C_{rej},& \text{otherwise}
+		\end{cases} $$
+		
+		\item[b)] 
+		If $l_r = 0$ then  $1-\frac{l_r}{l_s}=1$ and we will classify $x$ only in degenerate case  $\exists j: p(C_j|x) = 1$, In all other cases we chose $C_{rej}$. 
+		
+		\item[c)]
+		If $l_r > l_s$ then $1-\frac{l_r}{l_s} < 0$, probability $p(C_j|x)$ always positive, hence $p(C_j|x) \geq 1-\frac{l_r}{l_s}$ for any $x$ and we will never chose $C_{rej}$.
+	\end{enumerate}
+	%------------------------------------------------------%
+	
+	
+	\textbf{Question 4: Maximum Likelihood}\\
+	If $x_1,...,x_N$ are realizations of independent random variables with density $p(x|\theta)$, then the likelihood function is equal to the product of densities at these points:
+	$$L(\theta) = \prod_{i=1}^{N} p(x_i|\theta) = \theta^{2N}\left(\prod_{i=1}^{N}x_i\right)\exp\left(-\theta\sum_{i=1}^{N}x_i\right)$$
+	For convenience, let us further consider the logarithm of the likelihood function.
+	$$ l(\theta) = \ln L(\theta) = \ln \left(\theta^{2N}\right) + \ln\left(\prod_{i=1}^{N}x_i\right) -\theta\sum_{i=1}^{N}x_i $$
+	The estimation $\tilde\theta$  will be obtained from the maximization problem:
+	$$\tilde\theta = \arg \max l(\theta) = \arg\max\left[ \ln \left(\theta^{2N}\right) + \ln\left(\prod_{i=1}^{N}x_i\right) -\theta\sum_{i=1}^{N}x_i \right]$$
+	The necessary condition for the maximum: 
+	$$\frac{dl(\theta)}{d\theta} = \frac{2N}{\theta}-\sum_{i=1}^{N}x_i = 0$$
+	$$\tilde\theta = \frac{2N}{\sum x_i} = \frac{2}{\bar x}$$
+	where $\bar x$ is the average of $x_1,...,x_N$.
+	Let us also check the sufficient condition for the maximum:
+	$$\frac{d^2 l(\theta)}{d\theta^2} =- \frac{2N}{\theta^2} < 0$$
+	The second derivative at the point $\tilde{\theta}$ is less than zero, so $\tilde{\theta}$ is indeed the maximum point. That is, 	$\tilde\theta  = 2/\bar x$ is a maximum likelihood estimate
+	%------------------------------------------------------%
+	
+	
+\end{document}
